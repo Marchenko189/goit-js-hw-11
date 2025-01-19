@@ -16,5 +16,7 @@
 @import url('./badges.css');
 @import url('./back-link.css');
 @import url('./footer.css');
+@import url('./render-function.css');
 
 @import "izitoast/dist/css/iziToast.min.css";
+@import 'simplelightbox/dist/simple-lightbox.min.css';
