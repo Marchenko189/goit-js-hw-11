@@ -2,9 +2,19 @@ import { fetchPhotosByQuery } from './js/pixabay-api';
 
 import { createGalleryCardTemplate } from './js/render-functions';
 
+import { createLoadingIndicator } from './js/render-functions'; 
+
 import iziToast from "izitoast";
 
 import SimpleLightbox from "simplelightbox";
+
+const toggleLoadingIndicator = (loadingIndicator, show) => {
+    if (show) {
+        loadingIndicator.classList.add('show');
+    } else {
+        loadingIndicator.classList.remove('show');
+    }
+};
 
 const searchFormEl = document.querySelector('.js-search-form');
 const galleryEl = document.querySelector('.js-gallery');
@@ -26,9 +36,20 @@ const onSearchFormSubmit = event => {
 
         return;
     }
+
+    let loadingIndicator = document.querySelector('.loading-container');
+    if (!loadingIndicator) {
+        loadingIndicator = createLoadingIndicator();
+    }
+
+     toggleLoadingIndicator(loadingIndicator, true);
+    
     
     fetchPhotosByQuery(searchedQuery)
         .then(data => {
+
+         toggleLoadingIndicator(loadingIndicator, false);
+
         if (data.hits.length === 0) {
             iziToast.error({
                 title: "Error",
@@ -57,6 +78,9 @@ const onSearchFormSubmit = event => {
             lightbox.refresh();
         })
         .catch(err => {
+
+             loadingIndicator.classList.remove('show');
+
             console.log(err);
         });
     
